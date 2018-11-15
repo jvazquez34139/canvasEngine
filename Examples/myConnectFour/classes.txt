@@ -1,0 +1,25 @@
+game{
+	begin
+	player1 turn
+	player2 turn
+	checkTableH
+	checkTableV
+	checkTableD
+	victory
+}
+player{
+	color
+	tokens
+	myTurn
+}
+token{
+	dropped
+	x
+	y
+	updateTable
+}
+table{
+	available y[x[]]
+	display drop location of token
+	
+}
