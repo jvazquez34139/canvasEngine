@@ -1,12 +1,13 @@
-//jsgfl V2.0
+//jsgfl V2.3.1
 //required to run any canvas function
 //use canvas Id
 class CanvasGame{
-
+	//tested
 	constructor(canvas){
 		this.canvas = document.getElementById(canvas);
 		this.ctx = this.canvas.getContext('2d');
 	}
+	//tested
 	run(render, fps){
 		setInterval(render, 1000/fps);
 	}
@@ -17,12 +18,14 @@ class CanvasGame{
 	//basic graphics/////////////////////////////////////////////////////
 	vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 	//basic graphics/////////////////////////////////////////////////////
+	//tested
 	textString(string, font, x, y){
 		const string_ = {
 			string: string,
 			font: font,
 			x: x,
 			y: y,
+			height: 0,
 			color: "black",
 			visible: true,
 			deg: 0,
@@ -36,9 +39,10 @@ class CanvasGame{
 			}
 		};
 		string_.width = this.textSize(string_.string, string_.font).width;
-		string_.height = this.textSize(string_.string, string_.font).width;
+		// string_.height = this.textSize(string_.string, string_.font).width;
 		return string_;
 	}
+	//tested
 	point(x,y){
 		const point_ = {
 			x: x,
@@ -60,6 +64,7 @@ class CanvasGame{
 		return point_;
 
 	}
+	//tested
 	line(initX,initY,finalX,finalY){
 		const line_ = {
 			xi: initX,
@@ -94,6 +99,7 @@ class CanvasGame{
 		}
 		return line_;
 	}
+	//tested
 	rect(x,y,width,height,color){
 		const rect_ = {
 			x: x,
@@ -118,6 +124,7 @@ class CanvasGame{
 		}
 		return rect_;
 	}
+	//tested
 	circ(x,y,radius,fill,stroke,drawtype){
 		const circ_ = {
 			x: x,
@@ -150,6 +157,7 @@ class CanvasGame{
 		}
 		return circ_;
 	}
+	//tested
 	image(x,y,width,height,src){
 		const image_ = {
 			src: src,
@@ -179,6 +187,7 @@ class CanvasGame{
 		}
 		return image_;
 	}
+	//tested
 	spriteAnimation(x,y,width,height,sW,sH,src,totalFrames){
 		const animation_ = {
 			src: src,
@@ -243,6 +252,12 @@ class CanvasGame{
 		}
 		return animation_;
 	}
+	//tested
+	drawAll(objects){
+		objects.forEach(object => {
+			object.draw();
+		});
+	}
 
 
 	//more than just drawing/////////////////////////////////////////////
@@ -250,6 +265,7 @@ class CanvasGame{
 	//more than just drawing/////////////////////////////////////////////
 	vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 	//more than just drawing/////////////////////////////////////////////
+	//tested
 	rotateFunction(object){
 		//make it dry
 		let rad = object.deg * Math.PI / 180;
@@ -289,6 +305,7 @@ class CanvasGame{
 		}
 	}
 	//collision checking
+	//tested
 	collisionCheck(r1, r2){
 		//checks if any corners of rect1 are in or touching rect2
 		if(r1.x + r1.width >= r2.x && r1.x <= r2.x + r2.width &&
@@ -336,7 +353,54 @@ class CanvasGame{
         	collisionCheck(pointChecker,rect);
 	    }
 	}
-	//miscellaneous 
+	//tested
+	worldRectCol(rect, type){
+		const c = {
+			x: 0,
+			y: 0,
+			width: this.canvas.width,
+			height: this.canvas.height
+		}
+		if(type === "loop"){
+	        if(rect.x + rect.width <= 0){
+	            rect.x = c.width - 1;
+	        }
+	        if(rect.x >= c.width){
+	            rect.x = 0 - rect.width;
+	        }
+	        if(rect.y + rect.height <= 0){
+	            rect.y = c.height - 1;
+	        }
+	        if(rect.y >= c.height){
+	            rect.y = 0 - rect.height;
+	        }
+	    }
+	    if(type === "wall"){
+	        if(rect.x <= 0){
+	            rect.x = 0;
+	        }
+	        if(rect.y <= 0){
+	            rect.y = 0;
+	        }
+	        if(rect.y + rect.height >= c.height){
+	            rect.y = c.height - rect.height;
+	        }
+	        if(rect.x + rect.width >= this.canvas.width){
+	            rect.x = this.canvas.width - rect.width;
+	        }
+	    }
+	    if(type === "check"){
+	    	if(this.collisionCheck(rect,c)){
+	    		//within bounds
+	    		return true;
+	    	}else{
+	    		//is out of bounds
+	    		return false;
+	    	}
+	    }
+	}
+	//miscellaneous
+	//tested
 	textSize(string, font){
 		this.ctx.font = font;
 		this.ctx.measureText(string).width;
@@ -345,5 +409,37 @@ class CanvasGame{
 			height: this.ctx.measureText(string).height
 		}
 		return size;
+	}
+	//tested
+	rangeCheck(test, target, range){
+		if(test == target){
+			return true;
+		}else if(Math.abs(test - target) < range){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	//tested
+	counterObject(frequency, maxTicks){
+		const ticker = {
+			frame: 0,
+			frequency: frequency,
+			//for reset to avoid big numbers being stored
+			maxTicks: maxTicks,
+			tick: false,
+			run: () => {
+				ticker.frame += 1;
+				if(ticker.frame % ticker.frequency == 0){
+					ticker.tick = true;
+				}else{
+					ticker.tick = false;
+				}
+				if(ticker.frame >= ticker.maxTicks){
+					ticker.frame -= ticker.maxTicks;
+				}
+			}
+		};
+		return ticker;
 	}
 }
