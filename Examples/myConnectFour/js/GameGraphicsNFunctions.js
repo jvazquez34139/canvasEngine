@@ -1,13 +1,13 @@
-//jsgfl V2.3.1
+//jsgfl V2.4.1
 //required to run any canvas function
 //use canvas Id
 class CanvasGame{
-	//tested
+	//++tested
 	constructor(canvas){
 		this.canvas = document.getElementById(canvas);
 		this.ctx = this.canvas.getContext('2d');
 	}
-	//tested
+	//++tested
 	run(render, fps){
 		setInterval(render, 1000/fps);
 	}
@@ -18,7 +18,7 @@ class CanvasGame{
 	//basic graphics/////////////////////////////////////////////////////
 	vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 	//basic graphics/////////////////////////////////////////////////////
-	//tested
+	//++tested
 	textString(string, font, x, y){
 		const string_ = {
 			string: string,
@@ -42,7 +42,7 @@ class CanvasGame{
 		// string_.height = this.textSize(string_.string, string_.font).width;
 		return string_;
 	}
-	//tested
+	//++tested
 	point(x,y){
 		const point_ = {
 			x: x,
@@ -64,7 +64,7 @@ class CanvasGame{
 		return point_;
 
 	}
-	//tested
+	//++tested
 	line(initX,initY,finalX,finalY){
 		const line_ = {
 			xi: initX,
@@ -99,7 +99,7 @@ class CanvasGame{
 		}
 		return line_;
 	}
-	//tested
+	//++tested
 	rect(x,y,width,height,color){
 		const rect_ = {
 			x: x,
@@ -124,7 +124,7 @@ class CanvasGame{
 		}
 		return rect_;
 	}
-	//tested
+	//++tested
 	circ(x,y,radius,fill,stroke,drawtype){
 		const circ_ = {
 			x: x,
@@ -138,7 +138,7 @@ class CanvasGame{
 				this.ctx.fillStyle = circ_.fill;
 				this.ctx.strokeStyle = circ_.stroke;
 				this.ctx.beginPath();
-				this.arc(
+				this.ctx.arc(
 					circ_.x,
 					circ_.y,
 					circ_.radius,
@@ -157,7 +157,7 @@ class CanvasGame{
 		}
 		return circ_;
 	}
-	//tested
+	//++tested
 	image(x,y,width,height,src){
 		const image_ = {
 			src: src,
@@ -187,7 +187,7 @@ class CanvasGame{
 		}
 		return image_;
 	}
-	//tested
+	//++tested
 	spriteAnimation(x,y,width,height,sW,sH,src,totalFrames){
 		const animation_ = {
 			src: src,
@@ -252,7 +252,7 @@ class CanvasGame{
 		}
 		return animation_;
 	}
-	//tested
+	//++tested
 	drawAll(objects){
 		objects.forEach(object => {
 			object.draw();
@@ -265,7 +265,7 @@ class CanvasGame{
 	//more than just drawing/////////////////////////////////////////////
 	vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/
 	//more than just drawing/////////////////////////////////////////////
-	//tested
+	//++tested
 	rotateFunction(object){
 		//make it dry
 		let rad = object.deg * Math.PI / 180;
@@ -305,7 +305,7 @@ class CanvasGame{
 		}
 	}
 	//collision checking
-	//tested
+	//++tested
 	collisionCheck(r1, r2){
 		//checks if any corners of rect1 are in or touching rect2
 		if(r1.x + r1.width >= r2.x && r1.x <= r2.x + r2.width &&
@@ -353,7 +353,7 @@ class CanvasGame{
         	collisionCheck(pointChecker,rect);
 	    }
 	}
-	//tested
+	//++tested
 	worldRectCol(rect, type){
 		const c = {
 			x: 0,
@@ -400,7 +400,7 @@ class CanvasGame{
 	    }
 	}
 	//miscellaneous
-	//tested
+	//++tested
 	textSize(string, font){
 		this.ctx.font = font;
 		this.ctx.measureText(string).width;
@@ -410,7 +410,7 @@ class CanvasGame{
 		}
 		return size;
 	}
-	//tested
+	//++tested
 	rangeCheck(test, target, range){
 		if(test == target){
 			return true;
@@ -420,7 +420,7 @@ class CanvasGame{
 			return false;
 		}
 	}
-	//tested
+	//++tested
 	counterObject(frequency, maxTicks){
 		const ticker = {
 			frame: 0,
@@ -441,5 +441,21 @@ class CanvasGame{
 			}
 		};
 		return ticker;
+	}
+	//++tested
+	mouseListener(lisType){
+		const mouse_ = {
+			triggered: false,
+			triggReset: () => {
+				mouse_.triggered = false;
+			}
+		};
+		this.canvas.addEventListener(lisType, (e) => {
+			const rect = this.canvas.getBoundingClientRect();
+			mouse_.x = e.clientX - rect.x;
+			mouse_.y = e.clientY - rect.y;
+			mouse_.triggered = true;
+		});
+		return mouse_;
 	}
 }
