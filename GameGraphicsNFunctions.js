@@ -12,7 +12,7 @@ class CanvasGame{
 		setInterval(render, 1000/fps);
 	}
 
-	
+
 	//basic graphics/////////////////////////////////////////////////////
 	/*VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 	//basic graphics/////////////////////////////////////////////////////
@@ -457,5 +457,9 @@ class CanvasGame{
 			mouse_.triggered = true;
 		});
 		return mouse_;
+	}
+	randomHexColor(){
+	  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+	  return randomColor;
 	}
 }
